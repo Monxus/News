@@ -5,6 +5,7 @@
  */
 package org.proyectonoticias.sessionbeans;
 
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -27,6 +28,10 @@ public class NewsFacade extends AbstractFacade<News> {
 
     public NewsFacade() {
         super(News.class);
+    }
+    
+    public List<News> findFirstNewsByDate() {
+        return em.createNamedQuery("News.findOrderNews").setMaxResults(3).getResultList();
     }
     
 }

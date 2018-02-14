@@ -8,12 +8,14 @@ package org.proyectonoticias.servlet;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.proyectonoticias.entities.News;
 import org.proyectonoticias.sessionbeans.NewsFacade;
 
 /**
@@ -64,9 +66,16 @@ public class Noticias extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         Gson g = new Gson();
-        response.getWriter().print(g.toJson(newsFacade.findAll()));
-        response.setContentType("application/json");
         
+        List<News> news = newsFacade.findFirstNewsByDate();
+//        String list_news=g.toJson(news);
+//        System.out.println("PRUEBA");
+//        System.out.println(news);
+//        response.getWriter().print(news);
+//        response.setContentType("application/json");
+        request.setAttribute("list_news",news);
+        RequestDispatcher a = request.getRequestDispatcher("/news.jsp");
+        a.forward(request, response);
     }
 
     /**

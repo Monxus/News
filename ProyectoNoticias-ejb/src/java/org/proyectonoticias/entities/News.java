@@ -37,7 +37,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "News.findByDescription", query = "SELECT n FROM News n WHERE n.description = :description")
     , @NamedQuery(name = "News.findBySlug", query = "SELECT n FROM News n WHERE n.slug = :slug")
     , @NamedQuery(name = "News.findByTime", query = "SELECT n FROM News n WHERE n.time = :time")
-    , @NamedQuery(name = "News.findByCreator", query = "SELECT n FROM News n WHERE n.creator = :creator")})
+    , @NamedQuery(name = "News.findByCreator", query = "SELECT n FROM News n WHERE n.creator = :creator")
+    , @NamedQuery(name = "News.findOrderNews", query = "SELECT n FROM News n ORDER BY n.time DESC")
+})
 public class News implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -54,7 +56,9 @@ public class News implements Serializable {
     @Size(max = 2147483647)
     @Column(name = "img")
     private String img;
-    @Size(max = 2147483647)
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 2147483647)
     @Column(name = "description")
     private String description;
     @Size(max = 2147483647)
@@ -63,7 +67,7 @@ public class News implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "time")
-    @Temporal(TemporalType.TIME)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date time;
     @Size(max = 2147483647)
     @Column(name = "creator")
@@ -76,9 +80,10 @@ public class News implements Serializable {
         this.id = id;
     }
 
-    public News(Long id, String title, Date time) {
+    public News(Long id, String title, String description, Date time) {
         this.id = id;
         this.title = title;
+        this.description = description;
         this.time = time;
     }
 

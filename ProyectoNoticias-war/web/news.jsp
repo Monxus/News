@@ -4,7 +4,11 @@
     Author     : Ramon
 --%>
 
+<%@page import="org.proyectonoticias.entities.News"%>
+<%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<% List<News> news = (List<News>) request.getAttribute("list_news");
+%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -46,7 +50,6 @@
                 </div>
             </div>
         </nav>
-
         <!--Cabecera con el título de la página-->
         <div class="jumbotron container">
             <div class="container">
@@ -70,7 +73,7 @@
                     <source srcset="img/anu2aux.jpg">
                     <img src="img/anu2aux.jpg" alt="anuncio">
                 </picture>
-            </div>
+         <!--   </div>
 
             <div id="noticias">
                 <div class="well">
@@ -96,6 +99,9 @@
                         <div class="col-sm-3"><img class="img-rounded img-responsive" src="img/new3.jpg" alt="noticia"></div>
                         <div class="col-sm-9"><p class="text-justify">La construcción de viviendas con paja recupera su vieja gloria. En las últimas décadas ha ganado calidad y se ha convertido en una de las formas de bioarquitectura que mejor y más garantiza la salubridad del ambiente interior.  Con este desecho agrícola se han construido unas 500 viviendas en España que ahorran hasta el 75% en el consumo de energía.</p></div>
                     </div>
+                </div>-->
+                <div class="well">
+                    <h1> <%= news.get(0).getTitle() %></h1>
                 </div>
             </div>
 
