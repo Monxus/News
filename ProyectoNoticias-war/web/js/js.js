@@ -1,68 +1,89 @@
-var pagNew=1;
-var scrollable=true;
-var puntoCarga=40;
-var maxPag=3;
+var pagNew = 1;
+var scrollable = true;
+var puntoCarga = 40;
+var maxPag = 3;
+var moreNews = true;
 
-$(document).ready(function(){
-    $("#cargar-menu").click(function(){
-        if(scrollable){
+$(document).ready(function () {
+
+    $("#cargar-menu").click(function () {
+        if (scrollable) {
             $("#cargar-menu").html("Cargar noticias al pulsar un botón");
             $("#cargarBoton").hide();
-            $(window).scroll(function(){
-                if ($(window).scrollTop() + $(window).height() > $(document).height() - puntoCarga && pagNew<maxPag) { 
-                cargarNoticias();
+            $(window).scroll(function () {
+                if ($(window).scrollTop() + $(window).height() > $(document).height() - puntoCarga && moreNews) {
+                    cargarNoticias();
                 }
             });
-
-            scrollable=false;
-        }else{
+            scrollable = false;
+        } else {
             $("#cargar-menu").html("Cargar noticias con scroll");
-            if(pagNew<maxPag){
+            if (moreNews) {
                 $("#cargarBoton").show();
             }
-            scrollable=true;
+            scrollable = true;
         }
     });
-    $("#cargarBoton").click(function(){
-            cargarNoticias();       
+    $("#cargarBoton").click(function () {
+        cargarNoticias();
     });
-    $("#bottwit").click(function(){
+    $("#bottwit").click(function () {
         compartirTwit();
     });
-    $("#botface").click(function(){
+    $("#botface").click(function () {
         compartirFace();
     });
 });
-
-function cargarNoticias(){
-
-    $.getJSON("data/"+pagNew+".json", function( jsonObject ) {
-        crearNoticias( jsonObject );
+function cargarNoticias() {
+    var url = "Noticias";
+    var emess = "Error desconocido";
+    $.ajax({
+        method: "POST",
+        url: url,
+        data: {page: pagNew},
+        success: function (jsn) {
+            crearNoticias(jsn);
+            pagNew++;
+            if (jsn.length < 3) {
+                $("#cargarBoton").hide();
+                moreNews = false;
+            }
+        },
+        error: function (e) {
+            if (e["responseJSON"] === undefined)
+                alert(emess);
+            else
+                alert(e["responseJSON"]["error"]);
+        }
     });
-    pagNew++;
-    if(pagNew>2){
-        $("#cargarBoton").hide();
-    }
 }
 
-function crearNoticias(json){
-   $.each(json, function(i,noticia){
-        $("#noticias").append("<div class='well'><h2>"+noticia.titulo+"</h2><p class='text-muted'>"+noticia.datatime+"</p> \
-                            <div class='row'><div class='col-sm-3'><img class='img-rounded img-responsive' \
-                            src="+noticia.imgmid+" alt='noticia'></div><div class='col-sm-9'><p class='text-justify'>"+noticia.desc+"</p></div></div></div>"
-        );
+function crearNoticias(json) {
+    $.each(json, function (i, noticia) {
+        console.log(noticia);
+        console.log(noticia.img);
+        var imgAux;
+        if (typeof noticia.img === 'undefined') {
+            imgAux = "img/newDefault.jpg";
+        } else {
+            imgAux = noticia.img;
+        }
+        $("#noticias").append("<div class='well' id='" + noticia.id + "'><a href='#'><h2>" + noticia.title + "</h2></a>" +
+                "<p class='text-muted'>Publicada " + noticia.time + " por " + noticia.creator + "</p><div class='row'>" +
+                "<div class='col-sm-3'><img class='img-rounded img-responsive' src='" + imgAux + "' alt='noticia'></div>" +
+                "<div class='col-sm-9'><p class='text-justify'>" + noticia.description + "</p></div></div></div>"
+                );
     });
-}
 
-function compartirFace(){
+}
+function compartirFace() {
     var linkMal = window.location.href;
     var link = encodeURIComponent(linkMal);
-    window.open("https://www.facebook.com/sharer/sharer.php?u="+link);
-
+    window.open("https://www.facebook.com/sharer/sharer.php?u=" + link);
 }
 
-function compartirTwit(){
+function compartirTwit() {
     var linkMal = window.location.href;
     var link = encodeURIComponent(linkMal);
-    window.open("https://twitter.com/home?status="+$('title').text()+" - "+link);
+    window.open("https://twitter.com/home?status=" + $('title').text() + " - " + link);
 }

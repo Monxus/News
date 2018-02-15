@@ -34,4 +34,8 @@ public class NewsFacade extends AbstractFacade<News> {
         return em.createNamedQuery("News.findOrderNews").setMaxResults(3).getResultList();
     }
     
+    public List<News> findMoreNewsByDate(int pag) {
+        return em.createNamedQuery("News.findOrderNews").setMaxResults(3).setFirstResult(pag).getResultList();
+    }
+    
 }

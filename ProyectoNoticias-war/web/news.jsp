@@ -58,9 +58,6 @@
             </div>
         </div>
 
-        <!--Carrussel de noticias-->
-
-
         <!--Cuerpo con las noticias y el anuncio-->
         <div class="container" id="cuerpo">
 
@@ -73,41 +70,27 @@
                     <source srcset="img/anu2aux.jpg">
                     <img src="img/anu2aux.jpg" alt="anuncio">
                 </picture>
-         <!--   </div>
-
-            <div id="noticias">
-                <div class="well">
-                    <a href="news/arca-noe-plantas-peligro.html"><h2>El 'Arca de Noé' de las plantas en peligro</h2></a>
-                    <p class="text-muted">Dia 31 de Mayo, 9:23</p>
-                    <div class="row">
-                        <div class="col-sm-3"><img class="img-rounded img-responsive" src="img/new1.jpg" alt="noticia"></div>
-                        <div class="col-sm-9"><p class="text-justify">La Bóveda de Semillas de Svalbard, una especie de Arca de Noé vegetal construido en el Polo Norte para salvaguardar una copia de todas las plantas comestibles del mundo para afrontar un hipotético desastre global, necesita reparaciones, después de que entrara una gran cantidad de agua en el túnel de acceso a esta fortaleza de la humanidad.</p></div>
-                    </div>
-                </div>
-                <div class="well">
-                    <a href="news/españa-necesita-plan-cambio-climatico.html"><h2>España necesita un plan contra el cambio climático</h2></a>
-                    <p class="text-muted">Dia 30 de Mayo, 14:23</p>
-                    <div class="row">
-                        <div class="col-sm-3"><img class="img-rounded img-responsive" src="img/new2.jpg" alt="noticia"></div>
-                        <div class="col-sm-9"><p class="text-justify">Rajoy se ha comprometido a elaborar una ley contra el calentamiento y de transición energética. Las políticas vigentes no bastan: en 2040 el país incluso emitirá más dioxido de carbono que ahora. España que es uno de los países europeos más expuestos a los efectos dañinos del calentamiento, no solo no reducirá sus emisiones, sino que las aumentará en los próximos 25 años.</p></div>
-                    </div>
-                </div>
-                <div class="well">
-                    <h2>El gusto por las casas de paja revive</h2>
-                    <p class="text-muted">Dia 29 de Mayo, 10:31</p>
-                    <div class="row">
-                        <div class="col-sm-3"><img class="img-rounded img-responsive" src="img/new3.jpg" alt="noticia"></div>
-                        <div class="col-sm-9"><p class="text-justify">La construcción de viviendas con paja recupera su vieja gloria. En las últimas décadas ha ganado calidad y se ha convertido en una de las formas de bioarquitectura que mejor y más garantiza la salubridad del ambiente interior.  Con este desecho agrícola se han construido unas 500 viviendas en España que ahorran hasta el 75% en el consumo de energía.</p></div>
-                    </div>
-                </div>-->
-                <div class="well">
-                    <h1> <%= news.get(0).getTitle() %></h1>
-                </div>
             </div>
 
+            <div id="noticias">
+                <% for (int i = 0; i < news.size(); i++) {%>
+                <div class="well" id="<%= news.get(i).getId()%>">
+                    <% String imgAux;
+                        if (news.get(i).getImg() == null) {
+                            imgAux = "img/newDefault.jpg";
+                        } else {
+                            imgAux = news.get(i).getImg();
+                        }%>
+                    <a href="#"><h2><%= news.get(i).getTitle()%></h2></a>
+                    <p class="text-muted">Publicada <%= news.get(i).getTime()%> por <%= news.get(i).getCreator()%></p>
+                    <div class="row">
+                        <div class="col-sm-3"><img class="img-rounded img-responsive" src=" <%= imgAux%>" alt="noticia"></div>
+                        <div class="col-sm-9"><p class="text-justify"><%= news.get(i).getDescription()%></p></div>
+                    </div>
+                </div> 
+                <%  }%>
 
-
-
+            </div>
         </div>
 
         <!--Botón cargar más noticias-->
@@ -122,7 +105,7 @@
 
         <!--Pie de la web-->
         <div class="container panel panel-default" id="pie">
-            <div class="panel-body"><span class="glyphicon glyphicon-copyright-mark"></span> Ramón Moreno - 2017
+            <div class="panel-body"><span class="glyphicon glyphicon-copyright-mark"></span> Ramón Moreno - (2017-2018)
                 <a href="rss/rss.xml">
                     <img src = "https://www.w3schools.com/xml/pic_rss.gif" width ="36" height ="14">
                 </a>
