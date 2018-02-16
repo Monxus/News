@@ -128,6 +128,12 @@ button.navbar-toggle{
     margin-bottom: 10px;
 }
 
+/*Formulario añadir news*/
+
+#formulario_add{
+    margin-top: 55px;
+}
+
 
 /*Css desktop*/
 @media screen and (min-width: 769px){
