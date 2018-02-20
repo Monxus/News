@@ -15,6 +15,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -39,7 +40,6 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "News.findByTime", query = "SELECT n FROM News n WHERE n.time = :time")
     , @NamedQuery(name = "News.findByCreator", query = "SELECT n FROM News n WHERE n.creator = :creator")
     , @NamedQuery(name = "News.findOrderNews", query = "SELECT n FROM News n ORDER BY n.time DESC")
-
 })
 public class News implements Serializable {
 
@@ -65,11 +65,13 @@ public class News implements Serializable {
     @Size(max = 2147483647)
     @Column(name = "slug")
     private String slug;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "time")
     @Temporal(TemporalType.TIMESTAMP)
     private Date time;
+    @PrePersist
+    protected void onCreate() {
+        time = new Date();
+    }
     @Size(max = 2147483647)
     @Column(name = "creator")
     private String creator;
@@ -81,11 +83,10 @@ public class News implements Serializable {
         this.id = id;
     }
 
-    public News(Long id, String title, String description, Date time) {
+    public News(Long id, String title, String description) {
         this.id = id;
         this.title = title;
         this.description = description;
-        this.time = time;
     }
 
     public Long getId() {

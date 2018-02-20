@@ -60,8 +60,6 @@ function cargarNoticias() {
 
 function crearNoticias(json) {
     $.each(json, function (i, noticia) {
-        console.log(noticia);
-        console.log(noticia.img);
         var imgAux;
         if (typeof noticia.img === 'undefined') {
             imgAux = "img/newDefault.jpg";

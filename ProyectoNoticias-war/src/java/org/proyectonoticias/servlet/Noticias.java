@@ -51,7 +51,7 @@ public class Noticias extends HttpServlet {
             throws ServletException, IOException {
         int pag = Integer.parseInt(request.getParameter("page"));
         List<News> news = newsFacade.findMoreNewsByDate(pag*3);
-
+        
         Gson g = new Gson();
         response.setContentType("application/json");
         PrintWriter pw = response.getWriter();
