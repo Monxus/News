@@ -1,10 +1,5 @@
 tinymce.init({selector: 'textarea'});
-//
-////$(document).ready(function(){
-//    $("#btn_enviar").click(function () {
-//        sendNew();
-//    });
-//});
+
 
 function sendNew(){
     var url = "../AddNoticias";

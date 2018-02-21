@@ -34,6 +34,7 @@ $(document).ready(function () {
         compartirFace();
     });
 });
+
 function cargarNoticias() {
     var url = "Noticias";
     var emess = "Error desconocido";

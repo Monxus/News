@@ -6,6 +6,11 @@
 package org.proyectonoticias.servlet;
 
 import java.io.IOException;
+import java.text.Normalizer;
+import java.text.Normalizer.Form;
+import java.util.List;
+import java.util.Locale;
+import java.util.regex.Pattern;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -28,23 +33,29 @@ public class AddNoticias extends HttpServlet {
             throws ServletException, IOException {
         String titulo = request.getParameter("title");
         String noticia = request.getParameter("news");
-        
-        System.out.println("----------------------------");
-        System.out.println(titulo);
-        System.out.println(noticia);
-        
+
         News mynew = new News();
         mynew.setTitle(titulo);
         mynew.setDescription(noticia);
-        //mynew.setImg(titulo);
-        //mynew.setSlug(titulo);
-        //mynew.setCreator("Admin");
-        //MODIFICAR ENTITIES!!!!!!!!!!!!!!!!!!!!!
-        System.out.println("ENTRANDOOOO");
-        newsFacade.create(mynew);
-        System.out.println("CREADOOOO");
+        mynew.setSlug(crearSlug(titulo));
+        mynew.setCreator("Admin");
+        newsFacade.create(mynew);        
     }
 
-    
+    private String crearSlug(String t) {
+        Pattern NONLATIN = Pattern.compile("[^\\w-]");
+        Pattern WHITESPACE = Pattern.compile("[\\s]");
+        String nowhitespace = WHITESPACE.matcher(t).replaceAll("-");
+        String normalized = Normalizer.normalize(nowhitespace, Form.NFD);
+        String slug = NONLATIN.matcher(normalized).replaceAll("");
+        String finalSlug = slug.toLowerCase(Locale.ENGLISH);
+        List<News> news = newsFacade.findAll();
+        for (int i = 0; i < news.size(); i++) {
+            if(news.get(i).getSlug().equals(finalSlug)){
+                finalSlug+="v"+String.valueOf(news.size());
+            }
+        }
+        return finalSlug;
+    }
 
 }

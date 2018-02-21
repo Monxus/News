@@ -8,6 +8,10 @@
         <servlet-name>AddNoticias</servlet-name>
         <servlet-class>org.proyectonoticias.servlet.AddNoticias</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>VerNoticia</servlet-name>
+        <servlet-class>org.proyectonoticias.servlet.VerNoticia</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Noticias</servlet-name>
         <url-pattern>/Noticias</url-pattern>
@@ -15,6 +19,10 @@
     <servlet-mapping>
         <servlet-name>AddNoticias</servlet-name>
         <url-pattern>/AddNoticias</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>VerNoticia</servlet-name>
+        <url-pattern>/VerNoticia</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
