@@ -9,9 +9,9 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <% List<News> news = (List<News>) request.getAttribute("list_news");
 %>
-<% if(news==null){
-    response.sendRedirect("./Noticias");
-}else{%>
+<% if (news == null) {
+        response.sendRedirect("./Noticias");
+    } else {%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -27,8 +27,8 @@
         <meta name="description" content="Natura News - Tu principal portal de noticias sobre Naturaleza y Medio Ambiente">
         <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
         <meta property="og:title" content="Natura News"/>
-       <!-- <meta property="og:url" content="https://rawgit.com/Monxus/PaginaNoticias/master/news.html"/>
-        <meta property="og:image" content="https://rawgit.com/Monxus/PaginaNoticias/master/img/fondo.jpg"/>-->
+        <!-- <meta property="og:url" content="https://rawgit.com/Monxus/PaginaNoticias/master/news.html"/>
+         <meta property="og:image" content="https://rawgit.com/Monxus/PaginaNoticias/master/img/fondo.jpg"/>-->
         <meta property="og:site_name" content="Natura News"/>
         <meta property="og:description" content="Natura News - Tu principal portal de noticias sobre Naturaleza y Medio Ambiente"/>
     </head>
@@ -74,7 +74,6 @@
                     <img src="img/anu2aux.jpg" alt="anuncio">
                 </picture>
             </div>
-
             <div id="noticias">
                 <% for (int i = 0; i < news.size(); i++) {%>
                 <div class="well" id="<%= news.get(i).getId()%>">
@@ -95,10 +94,14 @@
 
             </div>
         </div>
-
         <!--Botón cargar más noticias-->
         <div class="container" id="cargarBoton">
             <button type="button" class="btn btn-success">Cargar más...</button>
+        </div>
+        <div class="loader"></div>
+        <div class="myAlert-bottom alert alert-success">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <p id="myAlertText"></p>
         </div>
 
         <div id="redes">
@@ -116,4 +119,4 @@
         </div>
     </body>
 </html>
-<% } %>
+<% }%>

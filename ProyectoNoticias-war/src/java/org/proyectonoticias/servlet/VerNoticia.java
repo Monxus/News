@@ -29,19 +29,25 @@ public class VerNoticia extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String slug=request.getParameter("s");
-        List<News> news = newsFacade.findNewsBySlug(slug);
-        System.out.println(slug);
-        News newAux;
-        if (news.isEmpty()) {
-            newAux=null;
-        }else{
-            newAux=news.get(0);
+        try {
+            String slug = request.getParameter("s");
+            List<News> news = newsFacade.findNewsBySlug(slug);
+            System.out.println(slug);
+            News newAux;
+            if (news.isEmpty()) {
+                newAux = null;
+            } else {
+                newAux = news.get(0);
+            }
+            request.setAttribute("mynew", newAux);
+            RequestDispatcher a = request.getRequestDispatcher("/readnew.jsp");
+            a.forward(request, response);
+        } catch (Exception e) {
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            response.setContentType("application/json");
+            PrintWriter pw = response.getWriter();
+            pw.println("{\"error\":\"Error al cargar la noticia\"}");
         }
-        request.setAttribute("mynew", newAux);
-        RequestDispatcher a = request.getRequestDispatcher("/readnew.jsp");
-        a.forward(request, response);
-
     }
 
 }

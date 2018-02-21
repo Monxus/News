@@ -134,6 +134,28 @@ button.navbar-toggle{
     margin-top: 55px;
 }
 
+/*Loader*/
+.loader {
+    border: 10px solid white;
+    border-top: 10px solid forestgreen; 
+    border-radius: 50%;
+    width: 75px;
+    height: 75px;
+    animation: spin 2s linear infinite;
+    margin:auto;
+}
+
+.myAlert-bottom{
+    position: fixed;
+    bottom: 5px;
+    right:2%;
+    width: 30%;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
 
 /*Css desktop*/
 @media screen and (min-width: 769px){

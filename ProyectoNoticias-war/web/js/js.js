@@ -1,8 +1,8 @@
 var pagNew = 1;
 var scrollable = true;
-var puntoCarga = 40;
-var maxPag = 3;
+var puntoCarga = 60;
 var moreNews = true;
+var cargandoNews=false;
 
 $(document).ready(function () {
 
@@ -11,7 +11,7 @@ $(document).ready(function () {
             $("#cargar-menu").html("Cargar noticias al pulsar un botón");
             $("#cargarBoton").hide();
             $(window).scroll(function () {
-                if ($(window).scrollTop() + $(window).height() > $(document).height() - puntoCarga && moreNews) {
+                if (($(window).scrollTop() + $(window).height() > $(document).height() - puntoCarga) && moreNews && !cargandoNews) {
                     cargarNoticias();
                 }
             });
@@ -33,30 +33,55 @@ $(document).ready(function () {
     $("#botface").click(function () {
         compartirFace();
     });
+
+    $(".loader").hide();
+    $(".myAlert-bottom").hide();
 });
 
 function cargarNoticias() {
+    cargandoNews = true;
     var url = "Noticias";
     var emess = "Error desconocido";
+    $(".loader").show();
+    $("#cargarBoton").hide();
     $.ajax({
         method: "POST",
         url: url,
         data: {page: pagNew},
         success: function (jsn) {
-            crearNoticias(jsn);
-            pagNew++;
-            if (jsn.length < 3) {
-                $("#cargarBoton").hide();
+            if (jsn["mess"] === "No hay más noticias para cargar") {
+                myAlertBottom("No hay más noticias para cargar");
                 moreNews = false;
+            } else {
+                crearNoticias(jsn);
+                pagNew++;
+                myAlertBottom("Noticias cargadas");
+                if (jsn.length < 3) {
+                    moreNews = false;
+                    myAlertBottom("Están son las últimas noticias almacenadas. No hay más noticias.");
+                }
             }
+            $(".loader").hide();
+            if (moreNews) {
+                $("#cargarBoton").show();
+            }
+            cargandoNews=false;
         },
         error: function (e) {
             if (e["responseJSON"] === undefined)
                 alert(emess);
             else
                 alert(e["responseJSON"]["error"]);
+            $(".loader").hide();
+            if (moreNews) {
+                $("#cargarBoton").show();
+            }
+            cargandoNews=false;
         }
     });
+
+
+
 }
 
 function crearNoticias(json) {
@@ -85,4 +110,12 @@ function compartirTwit() {
     var linkMal = window.location.href;
     var link = encodeURIComponent(linkMal);
     window.open("https://twitter.com/home?status=" + $('title').text() + " - " + link);
+}
+
+function myAlertBottom(txt) {
+    $(".myAlert-bottom").show();
+    $("#myAlertText").text(txt);
+    setTimeout(function () {
+        $(".myAlert-bottom").fadeOut();
+    }, 1000);
 }

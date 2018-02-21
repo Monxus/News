@@ -6,6 +6,7 @@
 package org.proyectonoticias.servlet;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.text.Normalizer;
 import java.text.Normalizer.Form;
 import java.util.List;
@@ -31,15 +32,23 @@ public class AddNoticias extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String titulo = request.getParameter("title");
-        String noticia = request.getParameter("news");
+        try {
+            String titulo = request.getParameter("title");
+            String noticia = request.getParameter("news");
 
-        News mynew = new News();
-        mynew.setTitle(titulo);
-        mynew.setDescription(noticia);
-        mynew.setSlug(crearSlug(titulo));
-        mynew.setCreator("Admin");
-        newsFacade.create(mynew);        
+            News mynew = new News();
+            mynew.setTitle(titulo);
+            mynew.setDescription(noticia);
+            mynew.setSlug(crearSlug(titulo));
+            mynew.setCreator("Admin");
+            newsFacade.create(mynew);
+        } catch (Exception e) {
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            response.setContentType("application/json");
+            PrintWriter pw = response.getWriter();
+            pw.println("{\"error\":\"Error al guardar la noticia\"}");
+        }
+
     }
 
     private String crearSlug(String t) {
@@ -51,8 +60,8 @@ public class AddNoticias extends HttpServlet {
         String finalSlug = slug.toLowerCase(Locale.ENGLISH);
         List<News> news = newsFacade.findAll();
         for (int i = 0; i < news.size(); i++) {
-            if(news.get(i).getSlug().equals(finalSlug)){
-                finalSlug+="v"+String.valueOf(news.size());
+            if (news.get(i).getSlug().equals(finalSlug)) {
+                finalSlug += "v" + String.valueOf(news.size());
             }
         }
         return finalSlug;
