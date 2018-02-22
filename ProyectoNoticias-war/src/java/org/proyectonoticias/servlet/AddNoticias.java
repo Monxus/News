@@ -45,81 +45,44 @@ public class AddNoticias extends HttpServlet {
             throws ServletException, IOException {
         try {
             request.setCharacterEncoding("UTF-8");
-            System.out.println("SERVLET");
-            System.out.println("-------------------------");
+            
             String username = request.getRemoteUser();
             String titulo = request.getParameter("title_new");
             String noticia = request.getParameter("noticia");
-            System.out.println(titulo);
-            System.out.println(noticia);
-            
-            
 
-//            File fImg = new File(System.getProperty("uploads.img"));
-//            if (!fImg.exists()) {
-//                fImg.mkdirs();
-//            }
-
-//            File fMid = new File(System.getProperty("uploads.imgMid"));
-//            if (!fMid.exists()) {
-//                fMid.mkdirs();
-//            }
-            
-//            Part filePart = request.getPart("file"); // Retrieves <input type="file" name="file">
-//            System.out.println("COJO FILE");
-//            String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString(); // MSIE fix.
-//            System.out.println(fileName);
-//            InputStream fileContent = filePart.getInputStream();
-//            
-//            BufferedImage image = ImageIO.read(fileContent);
-//            if (image !=null) {
-//                File myfileimg = new File(fImg, crearSlug(titulo) + ".jpg");
-//                System.out.println(myfileimg);
-//            //ImageIO.write(resizeTrick(image, 800, 600), ".jpg", myfileimg);
-//            }else{
-////                response.setContentType("application/json");
-////            PrintWriter pw = response.getWriter();
-////            pw.println("{\"mess\":\"Error con la imagen\"}");
-//System.out.println("ERROR IMG");
-//            }
-            
             News mynew = new News();
             mynew.setTitle(titulo);
             mynew.setDescription(noticia);
+            
             String mySlug = crearSlug(titulo);
-            System.out.println("XXX");
+           
             Part filePart = request.getPart("file"); // Retrieves <input type="file" name="file">
-            if (filePart==null) {
+            if (filePart == null) {
                 System.out.println("S NULO");
             }
             InputStream fileContent = filePart.getInputStream();
             BufferedImage image = ImageIO.read(fileContent);
-            System.out.println("PATHS");
-            System.out.println(request.getServletContext().getRealPath(""));
-            System.out.println(request.getServletPath());
+
             String path = request.getServletContext().getRealPath("")
                     + File.separator + "img" + File.separator + "uploadImg" + File.separator + mySlug + ".png";
-            System.out.println(path);
             String auxpath = request.getServletContext().getRealPath("")
                     + File.separator + ".." + File.separator + ".." + File.separator + ".." + File.separator + ".." + File.separator + "ProyectoNoticias-war" + File.separator + "web" + File.separator + "img" + File.separator + "uploadImg" + File.separator + mySlug + ".png";
-            System.out.println(auxpath);
+
             File outputFile = new File(path);
             ImageIO.write(resizeBufferedImage(image, 800, 450), "png", outputFile);
             File outputFile2 = new File(auxpath);
             ImageIO.write(resizeBufferedImage(image, 800, 450), "png", outputFile2);
-            System.out.println("ESCRITA");
-            
+
             mynew.setSlug(mySlug);
             mynew.setCreator(username);
             mynew.setImg(mySlug);
-            
-            
+
             newsFacade.create(mynew);
-            
+
             response.setContentType("application/json");
             PrintWriter pw = response.getWriter();
-            pw.println("{\"mess\":\"../VerNoticia?s="+mySlug+"\"}");
-            
+            pw.println("{\"mess\":\"../VerNoticia?s=" + mySlug + "\"}");
+
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             response.setContentType("application/json");

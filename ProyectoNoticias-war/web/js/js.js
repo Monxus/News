@@ -90,7 +90,7 @@ function crearNoticias(json) {
         if (typeof noticia.img === 'undefined') {
             imgAux = "img/newDefault.jpg";
         } else {
-            imgAux = noticia.img;
+            imgAux = "img/uploadImg/" +noticia.img+".png";
         }
         $("#noticias").append("<div class='well' id='" + noticia.id + "'><a href='#'><h2>" + noticia.title + "</h2></a>" +
                 "<p class='text-muted'>Publicada " + noticia.time + " por " + noticia.creator + "</p><div class='row'>" +

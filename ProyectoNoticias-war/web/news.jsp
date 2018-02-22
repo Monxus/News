@@ -81,7 +81,7 @@
                         if (news.get(i).getImg() == null) {
                             imgAux = "img/newDefault.jpg";
                         } else {
-                            imgAux = "img/uploadImg/"+news.get(i).getImg()+".png";
+                            imgAux = "img/uploadImg/" + news.get(i).getImg() + ".png";
                         }%>
                     <a href="VerNoticia?s=<%= news.get(i).getSlug()%>"><h2><%= news.get(i).getTitle()%></h2></a>
                     <p class="text-muted">Publicada <%= news.get(i).getTime()%> por <%= news.get(i).getCreator()%></p>
@@ -91,7 +91,6 @@
                     </div>
                 </div> 
                 <%  }%>
-
             </div>
         </div>
         <!--Botón cargar más noticias-->
