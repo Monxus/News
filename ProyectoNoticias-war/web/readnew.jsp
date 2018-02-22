@@ -70,7 +70,7 @@
                         if (mynew.getImg() == null) {
                             imgAux = "img/imgAux.jpg";
                         } else {
-                            imgAux = mynew.getImg();
+                            imgAux = "img/uploadImg/"+mynew.getImg()+".png";
                         }%>
             <img class="img-thumbnail img-responsive" src=<%= imgAux%> alt="noticia">
             <div id="redes">

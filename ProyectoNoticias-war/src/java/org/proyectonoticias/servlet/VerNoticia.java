@@ -32,7 +32,6 @@ public class VerNoticia extends HttpServlet {
         try {
             String slug = request.getParameter("s");
             List<News> news = newsFacade.findNewsBySlug(slug);
-            System.out.println(slug);
             News newAux;
             if (news.isEmpty()) {
                 newAux = null;

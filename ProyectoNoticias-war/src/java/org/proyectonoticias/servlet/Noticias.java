@@ -88,9 +88,9 @@ public class Noticias extends HttpServlet {
 
     private void tratarNews(News n) {
         String desc = Jsoup.parse(n.getDescription()).text();
-        int limit = (desc.length() < 200) ? desc.length() : 200;
+        int limit = (desc.length() < 400) ? desc.length() : 400;
         String substring = desc.substring(0, limit);
-        if (limit == 200) {
+        if (limit == 400) {
             substring += "...";
         }
         n.setDescription(substring);

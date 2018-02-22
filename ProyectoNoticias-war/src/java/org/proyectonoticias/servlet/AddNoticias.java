@@ -5,6 +5,8 @@
  */
 package org.proyectonoticias.servlet;
 
+import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
 import java.io.File;
@@ -45,10 +47,14 @@ public class AddNoticias extends HttpServlet {
             request.setCharacterEncoding("UTF-8");
             System.out.println("SERVLET");
             System.out.println("-------------------------");
+            String username = request.getRemoteUser();
+            String titulo = request.getParameter("title_new");
             String noticia = request.getParameter("noticia");
-            String titulo = request.getParameter("titulo");
             System.out.println(titulo);
             System.out.println(noticia);
+            
+            
+
 //            File fImg = new File(System.getProperty("uploads.img"));
 //            if (!fImg.exists()) {
 //                fImg.mkdirs();
@@ -77,13 +83,37 @@ public class AddNoticias extends HttpServlet {
 //System.out.println("ERROR IMG");
 //            }
             
-
             News mynew = new News();
             mynew.setTitle(titulo);
             mynew.setDescription(noticia);
             String mySlug = crearSlug(titulo);
-            mynew.setSlug(crearSlug(titulo));
-            mynew.setCreator("Admin");
+            System.out.println("XXX");
+            Part filePart = request.getPart("file"); // Retrieves <input type="file" name="file">
+            if (filePart==null) {
+                System.out.println("S NULO");
+            }
+            InputStream fileContent = filePart.getInputStream();
+            BufferedImage image = ImageIO.read(fileContent);
+            System.out.println("PATHS");
+            System.out.println(request.getServletContext().getRealPath(""));
+            System.out.println(request.getServletPath());
+            String path = request.getServletContext().getRealPath("")
+                    + File.separator + "img" + File.separator + "uploadImg" + File.separator + mySlug + ".png";
+            System.out.println(path);
+            String auxpath = request.getServletContext().getRealPath("")
+                    + File.separator + ".." + File.separator + ".." + File.separator + ".." + File.separator + ".." + File.separator + "ProyectoNoticias-war" + File.separator + "web" + File.separator + "img" + File.separator + "uploadImg" + File.separator + mySlug + ".png";
+            System.out.println(auxpath);
+            File outputFile = new File(path);
+            ImageIO.write(resizeBufferedImage(image, 800, 450), "png", outputFile);
+            File outputFile2 = new File(auxpath);
+            ImageIO.write(resizeBufferedImage(image, 800, 450), "png", outputFile2);
+            System.out.println("ESCRITA");
+            
+            mynew.setSlug(mySlug);
+            mynew.setCreator(username);
+            mynew.setImg(mySlug);
+            
+            
             newsFacade.create(mynew);
             
             response.setContentType("application/json");
@@ -115,8 +145,15 @@ public class AddNoticias extends HttpServlet {
         return finalSlug;
     }
 
-    private RenderedImage resizeTrick(BufferedImage image, int i, int i0) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private BufferedImage resizeBufferedImage(BufferedImage img, int newW, int newH) {
+        Image tmp = img.getScaledInstance(newW, newH, Image.SCALE_SMOOTH);
+        BufferedImage dimg = new BufferedImage(newW, newH, BufferedImage.TYPE_INT_ARGB);
+
+        Graphics2D g2d = dimg.createGraphics();
+        g2d.drawImage(tmp, 0, 0, null);
+        g2d.dispose();
+
+        return dimg;
     }
 
 }

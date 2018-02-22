@@ -12,15 +12,20 @@ function sendNew() {
         $(".loader").show();
         $("#btn_enviar").hide();
 
-        var fd = new FormData($(this)[0]); 
+        var fd = new FormData($("#myform")[0]);
         var emess = "Error desconocido";
 
         fd.append("noticia", tinymce.get('area_news').getContent());
-        fd.append("titulo",$("#titulo_news").val());
-        
-        $.ajax({url: "../AddNoticias", type: 'POST', data: fd,
+
+        $.ajax({type: "POST",
+        enctype: 'multipart/form-data',
+        url: "../AddNoticias",
+        data: fd,
+        processData: false,
+        contentType: false,
+        cache: false,
             success: function (d) {
-                window.location=d["mess"];
+                window.location = d["mess"];
             },
             error: function (e) {
                 if (e["responseJSON"] === undefined)
@@ -28,7 +33,8 @@ function sendNew() {
                 else
                     alert(e["responseJSON"]["error"]);
                 $("#btn_enviar").show();
-            }, cache: false, contentType: false, processData: false
+                $(".loader").hide();
+            },
         });
 
 //        var url = "../AddNoticias";
@@ -81,7 +87,32 @@ function sendNew() {
 ;
 
 //$("#myform").submit(function () {
+//    if (!send) {
+//        send = true;
+//        $(".loader").show();
+//        $("#btn_enviar").hide();
 //
+//        var fd = new FormData($(this)[0]);
+//        var emess = "Error desconocido";
+//
+//        fd.append("noticia", tinymce.get('area_news').getContent());
+//        fd.append("titulo", $("#titulo_news").val());
+//
+//        $.ajax({url: "../AddNoticias", type: 'POST', data: fd,
+//            success: function (d) {
+//                window.location = d["mess"];
+//            },
+//            error: function (e) {
+//                if (e["responseJSON"] === undefined)
+//                    alert(emess);
+//                else
+//                    alert(e["responseJSON"]["error"]);
+//                $("#btn_enviar").show();
+//                $(".loader").hide();
+//            }, cache: false, contentType: false, processData: false
+//        });
+//    }
+
 //console.log("HI");
 //    var send = true;
 //

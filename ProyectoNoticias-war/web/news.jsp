@@ -81,7 +81,7 @@
                         if (news.get(i).getImg() == null) {
                             imgAux = "img/newDefault.jpg";
                         } else {
-                            imgAux = news.get(i).getImg();
+                            imgAux = "img/uploadImg/"+news.get(i).getImg()+".png";
                         }%>
                     <a href="VerNoticia?s=<%= news.get(i).getSlug()%>"><h2><%= news.get(i).getTitle()%></h2></a>
                     <p class="text-muted">Publicada <%= news.get(i).getTime()%> por <%= news.get(i).getCreator()%></p>
