@@ -5,18 +5,26 @@
  */
 package org.proyectonoticias.servlet;
 
+import java.awt.image.BufferedImage;
+import java.awt.image.RenderedImage;
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
+import java.nio.file.Paths;
 import java.text.Normalizer;
 import java.text.Normalizer.Form;
 import java.util.List;
 import java.util.Locale;
 import java.util.regex.Pattern;
 import javax.ejb.EJB;
+import javax.imageio.ImageIO;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 import org.proyectonoticias.entities.News;
 import org.proyectonoticias.sessionbeans.NewsFacade;
 
@@ -24,6 +32,7 @@ import org.proyectonoticias.sessionbeans.NewsFacade;
  *
  * @author Ramon
  */
+@MultipartConfig
 public class AddNoticias extends HttpServlet {
 
     @EJB
@@ -33,15 +42,54 @@ public class AddNoticias extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            String titulo = request.getParameter("title");
-            String noticia = request.getParameter("news");
+            request.setCharacterEncoding("UTF-8");
+            System.out.println("SERVLET");
+            System.out.println("-------------------------");
+            String noticia = request.getParameter("noticia");
+            String titulo = request.getParameter("titulo");
+            System.out.println(titulo);
+            System.out.println(noticia);
+//            File fImg = new File(System.getProperty("uploads.img"));
+//            if (!fImg.exists()) {
+//                fImg.mkdirs();
+//            }
+
+//            File fMid = new File(System.getProperty("uploads.imgMid"));
+//            if (!fMid.exists()) {
+//                fMid.mkdirs();
+//            }
+            
+//            Part filePart = request.getPart("file"); // Retrieves <input type="file" name="file">
+//            System.out.println("COJO FILE");
+//            String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString(); // MSIE fix.
+//            System.out.println(fileName);
+//            InputStream fileContent = filePart.getInputStream();
+//            
+//            BufferedImage image = ImageIO.read(fileContent);
+//            if (image !=null) {
+//                File myfileimg = new File(fImg, crearSlug(titulo) + ".jpg");
+//                System.out.println(myfileimg);
+//            //ImageIO.write(resizeTrick(image, 800, 600), ".jpg", myfileimg);
+//            }else{
+////                response.setContentType("application/json");
+////            PrintWriter pw = response.getWriter();
+////            pw.println("{\"mess\":\"Error con la imagen\"}");
+//System.out.println("ERROR IMG");
+//            }
+            
 
             News mynew = new News();
             mynew.setTitle(titulo);
             mynew.setDescription(noticia);
+            String mySlug = crearSlug(titulo);
             mynew.setSlug(crearSlug(titulo));
             mynew.setCreator("Admin");
             newsFacade.create(mynew);
+            
+            response.setContentType("application/json");
+            PrintWriter pw = response.getWriter();
+            pw.println("{\"mess\":\"../VerNoticia?s="+mySlug+"\"}");
+            
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             response.setContentType("application/json");
@@ -65,6 +113,10 @@ public class AddNoticias extends HttpServlet {
             }
         }
         return finalSlug;
+    }
+
+    private RenderedImage resizeTrick(BufferedImage image, int i, int i0) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

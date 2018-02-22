@@ -35,7 +35,7 @@ public class Noticias extends HttpServlet {
         try {
             List<News> news = newsFacade.findFirstNewsByDate();
             for (int i = 0; i < news.size(); i++) {
-                tratarNews(news.get(0));
+                tratarNews(news.get(i));
             }
 
             request.setAttribute("list_news", news);
@@ -69,6 +69,9 @@ public class Noticias extends HttpServlet {
                 PrintWriter pw = response.getWriter();
                 pw.println("{\"mess\":\"No hay más noticias para cargar\"}");
             } else {
+                for (int i = 0; i < news.size(); i++) {
+                    tratarNews(news.get(i));
+                }
                 Gson g = new Gson();
                 response.setContentType("application/json");
                 PrintWriter pw = response.getWriter();
@@ -86,7 +89,12 @@ public class Noticias extends HttpServlet {
     private void tratarNews(News n) {
         String desc = Jsoup.parse(n.getDescription()).text();
         int limit = (desc.length() < 200) ? desc.length() : 200;
-        n.setDescription(desc.substring(0, limit));
+        String substring = desc.substring(0, limit);
+        if (limit == 200) {
+            substring += "...";
+        }
+        n.setDescription(substring);
+
     }
 
 }

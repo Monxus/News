@@ -9,6 +9,7 @@ and open the template in the editor.
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Añadir noticia</title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="../css/fileinput.min.css"> 
         <link rel='stylesheet' type="text/css" href='../css/custom.css'>  
         <link href="https://fonts.googleapis.com/css?family=Allerta" rel="stylesheet">
         <meta charset="UTF-8">
@@ -16,9 +17,8 @@ and open the template in the editor.
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <script src="https://cloud.tinymce.com/stable/tinymce.min.js"></script>
+        <script src='../js/fileinput.min.js'></script>
         <script src="../js/js_add.js"></script>
-        
-
     </head>
     <body>
         <!--Barra navegación superior fija-->
@@ -35,24 +35,28 @@ and open the template in the editor.
                 <div class="collapse navbar-collapse" id="myNavbar">
                     <ul class="nav navbar-nav">
                         <li class="active"><a href="../Noticias">Inicio</a></li>
-                        <li><a id="cargar-menu">Cargar noticias con scroll</a></li>
-                        <li><a href="admin/add_news.html">Añadir noticia</a></li>
+                        <li><a href="./add_news.html">Añadir noticia</a></li>
                     </ul>
                 </div>
             </div>
         </nav>
         <!--Insertar Noticias-->
         <div class="container" id="formulario_add">
-        <form onsubmit="return sendNew()">
-            <div class="form-group">
-                <label for="titulo_new">Titulo Noticia:</label>
-                <input type="text" class="form-control" id="titulo_news" pattern=".{6,}" title="El título debe contener por lo menos 6 carácteres">
-            </div>
-            <div class="form-group">
-                <textarea id="area_news">Escribe tu noticia...</textarea>
-            </div>
-            <button type="submit" class="btn btn-default" id="btn_enviar">Enviar</button>
-        </form>
+            <form id="myform" onsubmit="return sendNew()">
+                <div class="form-group">
+                    <label for="titulo_new">Titulo Noticia:</label>
+                    <input type="text" name="title_new" class="form-control" id="titulo_news" pattern=".{6,}" title="El título debe contener por lo menos 6 carácteres">
+                </div>
+                <div class="form-group">
+                    <textarea id="area_news">Escribe tu noticia...</textarea>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Adjunta una imagen</label> 
+                    <input id="cartel" name="file" type="file" class="file" data-show-upload="false" data-show-caption="true" data-allowed-file-extensions='["jpg"]' required>
+                </div>
+                <button type="submit" class="btn btn-default" id="btn_enviar">Enviar</button>
+            </form>
+            <div class="loader"></div>
         </div>
     </body>
 </html>
